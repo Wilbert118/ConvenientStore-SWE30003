@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Online Convenience Store{% endblock %}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        header { background-color: #333; color: white; padding: 10px 20px; }
+        nav a { color: white; margin-right: 15px; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+        main { padding: 20px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>Online Convenience Store</h2>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/products">Catalogue</a>
+            <a href="/upload">Add Product</a>
+            <a href="/login">Login</a>
+            <a href="/signup">Sign Up</a>
+        </nav>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
