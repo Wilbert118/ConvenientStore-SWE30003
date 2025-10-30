@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}🛒 {{ session.get("user").get("name") }} Cart{% endblock %}
+
+{% block content %}
+{% if session.get("user") %}
+    <h1>{{ session.get("user").get("name") }}'s Shopping Cart</h1>
+    <div id="cart-container"></div>
+
+    <script>
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const container = document.getElementById("cart-container");
+
+    if (cart.length > 0) {
+        container.innerHTML = `
+        <div id="cart-items"></div>
+        <div class="cart-summary" id="cart-summary"></div>
+        <button class="btn btn-primary" onclick="checkout()">Checkout</button>
+        `;
+        renderCart();
+    } else {
+        container.innerHTML = `
+        <p>Your cart is empty. Browse our <a href="/products">Product Catalogue</a> to add items.</p>
+        `;
+    }
+    </script>
+
+    
+{% else %}
+    <h1>Shopping Cart</h1>
+    <p>Please <a href="/login">log in</a> to view your cart.</p>
+{% endif %}
+{% endblock %}

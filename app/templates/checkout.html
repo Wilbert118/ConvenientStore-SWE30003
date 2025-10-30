@@ -1,0 +1,66 @@
+
+{% extends "base.html" %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+    <h1>Checkout</h1>
+    <p> Shipping Details</p>
+    <form id="checkout-form" method="POST" action="/checkout">
+        <label for="address">Address:</label><br>
+        <input type="text" id="address" name="address" required minlength="5"><br><br>
+
+        <label for="city">City:</label><br>
+        <select name="city" id="city" required>
+            <option value="">-- Select City --</option>
+            <option value="Melbourne">Melbourne</option>
+            <option value="Sydney">Sydney</option>
+            <option value="Gold Coast">Gold Coast</option>
+        </select><br><br>
+        <label for="state">State:</label><br>
+        <select name="state" id="state" required>
+            <option value="">-- Select State --</option>
+            <option value="VIC">VIC</option>
+            <option value="NSW">NSW</option>
+            <option value="QLD">QLD</option>
+        </select><br><br>
+        <label for="postal_code">Postal Code:</label><br>
+        <input type="text" id="postal_code" name="postal_code" required pattern="^\d{4,6}$"><br><br>
+
+        <h2>Contact Information</h2>
+        <label for="name">Full Name:</label><br>
+        <input type="text" id="name" name="name" required minlength="3"><br><br>
+
+        <label for="phone">Phone Number:</label><br>
+        <input type="tel" id="phone" name="phone" required pattern="^\+?\d{8,15}$"><br><br>
+
+        <label for="notes">Additional Notes:</label><br>
+        <textarea id="notes" name="notes" rows="4" cols="50" placeholder="Any special instructions..."></textarea><br><br>
+
+        <input type="hidden" name="cart" id="cart-data">
+
+
+        <button type="submit">Payment</button>
+    </form>
+    <br>
+    <a href="/cart">← Back to Cart</a>
+{% endblock %}
+{% block scripts %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("checkout-form");
+    const cartInput = document.getElementById("cart-data");
+
+    if (form && cartInput) {
+      form.addEventListener("submit", function (event) {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        cartInput.value = JSON.stringify(cart);
+        console.log("Cart data set for submission:", cartInput.value);
+        console.log("Form submitted with cart data.", cart);
+      });
+    } else {
+      console.warn("Form or cart input not found.");
+    }
+  });
+</script>
+{% endblock %}

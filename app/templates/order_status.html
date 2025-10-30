@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Order Status{% endblock %}
+
+{% block content %}
+<h1>Order Status</h1>
+
+<h2>Shipping Details</h2>
+<p><strong>Recipient:</strong> {{ status.shipping.recipient_name }}</p>
+<p><strong>Address:</strong> {{ status.shipping.address }}, {{ status.shipping.city }} {{ status.shipping.postcode }}</p>
+<p><strong>Phone:</strong> {{ status.shipping.phone }}</p>
+<p><strong>Notes:</strong> {{ status.shipping.notes or "None" }}</p>
+
+<h2>Delivery Information</h2>
+<p><strong>Status:</strong> {{ status.delivery.status }}</p>
+<p><strong>Tracking Number:</strong> {{ status.delivery.tracking_number }}</p>
+<p><strong>Delivery Personnel:</strong> {{ status.delivery_person.name }}</p>
+<p><strong>Contact:</strong> {{ status.delivery_person.phone }}</p>
+<p><strong>Updated at:</strong> {{ status.delivery.updated_at }}</p>
+
+<h2>List of Purchases</h2>
+<ul>
+  {% for item in status["items"] %}
+    <li>{{ item.quantity }} × {{ item.product_name }}</li>
+  {% endfor %}
+</ul>
+
+<a href="/products">← Back to Products</a>
+{% endblock %}

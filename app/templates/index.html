@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Welcome to the Online Convenience Store</h1>
+    <h1>Welcome {% if session.get("user")%}
+        {{ session.get("user").get("name") }},
+        {% endif %}
+         to the Online Convenience Store</h1>
     <p>Start shopping by browsing our <a href="/products">product catalogue</a>.</p>
     <p>Managers can <a href="/upload">add new products</a>.</p>
 {% endblock %}

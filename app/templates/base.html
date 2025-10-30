@@ -1,3 +1,76 @@
+
+<script>
+    function addToCart(id, name, price, image) {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const existingItem = cart.find(item => item.id === id);
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({ id: id, name: name, price: price, image: image, quantity: 1 });
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        alert(name + ' has been added to your cart.');
+    }
+    
+    function renderCart() {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const container = document.getElementById("cart-items");
+        const summary = document.getElementById("cart-summary");
+        container.innerHTML = "";
+        let total = 0;
+
+        if (cart.length === 0) {
+            container.innerHTML = "<p>Your cart is empty.</p>";
+            summary.innerHTML = "";
+            return;
+        }
+        cart.forEach(item => {
+            total += item.price * item.quantity;
+            const row = document.createElement("div");
+            row.className = "cart-item";
+            row.innerHTML = `
+            <img src="${item.image}" alt="${item.name}" width="100">
+            <div>
+                <strong>${item.name}</strong><br>
+                Price: $${item.price.toFixed(2)} x ${item.quantity}<br>
+            </div>
+            <button class="btn btn-danger btn-sm" onclick="removeFromCart('${item.id}')">Remove</button>
+            `;
+            container.appendChild(row);
+        });
+        summary.innerHTML = `<h3>Total: $${total.toFixed(2)}</h3>`;
+
+    }
+
+    function removeFromCart(productId) {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const updatedCart = cart.filter(item => item.id !== productId);
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+    }
+
+    function checkout() {
+        window.location.href = "/checkout";
+
+    }
+    document.addEventListener("DOMContentLoaded", renderCart);
+    document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("checkout-form");
+    const cartInput = document.getElementById("cart-data");
+
+    if (form && cartInput) {
+      form.addEventListener("submit", function (event) {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        cartInput.value = JSON.stringify(cart);
+        console.log("Cart data set for submission:", cartInput.value);
+        console.log("Form submitted with cart data.", cart);
+      });
+    } else {
+      console.warn("Form or cart input not found.");
+    }
+  });
+
+
+</script>
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,9 +78,44 @@
     <style>
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
         header { background-color: #333; color: white; padding: 10px 20px; }
+        nav { display: flex; align-items: right; }
         nav a { color: white; margin-right: 15px; text-decoration: none; }
         nav a:hover { text-decoration: underline; }
+        .nav-right { margin-left: auto; }
         main { padding: 20px; }
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .product-card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+        @media (min-width: 1024px) {
+    .product-list {
+        grid-template-columns: repeat(5, 1fr);
+        }
+    }
+
+    @media (min-width: 768px) and (max-width: 1023px) {
+        .product-list {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @media (max-width: 767px) {
+        .product-list {
+            grid-template-columns: repeat(1, 1fr);
+        }
+    }
+
+
     </style>
 </head>
 <body>
@@ -17,12 +125,25 @@
             <a href="/">Home</a>
             <a href="/products">Catalogue</a>
             <a href="/upload">Add Product</a>
-            <a href="/login">Login</a>
-            <a href="/signup">Sign Up</a>
+            {% if session.get("user") %}
+                <div class="nav-right">
+                    <a href="/cart">🛒 Cart</a>
+                    <a href="/logout">Logout</a>
+                </div>
+
+
+            {% else %}
+                <a href="/login">Login</a>
+                <a href="/signup">Sign Up</a>
+            {% endif %}
         </nav>
     </header>
     <main>
         {% block content %}{% endblock %}
     </main>
+{% block scripts %}{% endblock %}
+
 </body>
 </html>
+
+

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Payment{% endblock %}
+
+{% block content %}
+<h1>Payment</h1>
+<p>Please select your payment method to complete the order.</p>
+
+<form method="POST" action="/payment">
+    <label for="method">Payment Method:</label><br>
+    <select name="method" id="method" required>
+        <option value="">-- Choose Method --</option>
+        <option value="account">Account Details</option>
+        <option value="cheque">Cheque Details</option>
+        <option value="card">Card Details</option>
+    </select><br><br>
+
+    <button type="submit">Confirm Payment</button>
+</form>
+
+<br>
+<a href="/checkout">← Back to Checkout</a>
+{% endblock %}

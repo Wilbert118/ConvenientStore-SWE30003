@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 
 {% block title %}Product Catalogue{% endblock %}
@@ -12,7 +13,10 @@
                 <p>Category: {{ product[3] }}</p>
                 <p>Price: ${{ "%.2f"|format(product[2]) }}</p>
                 <p>Stock: {{ product[4] }}</p>
+                <button class="btn btn-outline-primary" onclick="addToCart('{{ product[0] }}', '{{ product[1] }}', {{ product[2] }}, '{{ product[5] }}')">Add to Cart</button>
             </div>
+            
         {% endfor %}
     </div>
 {% endblock %}
+
