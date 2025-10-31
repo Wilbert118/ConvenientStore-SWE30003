@@ -14,7 +14,7 @@ def assign_delivery(sale_id):
     personnel = conn.table("users").select("id").eq("role", "delivery").execute().data
 
     
-    active = conn.table("deliveries").select("delivery_person_id").eq("status", "in_transit").execute().data
+    active = conn.table("deliveries").select("delivery_person_id").eq("status", "pending").execute().data
     active_ids = {d["delivery_person_id"] for d in active}
 
     
@@ -59,3 +59,26 @@ def order_status(sale_id):
         "delivery_person": personnel
     }
     
+def change_delivery_status(sale_id, new_status):
+    conn = get_supabase()
+    try:
+        conn.table("deliveries").update({
+            "status": new_status,
+            "updated_at": datetime.datetime.now().isoformat()
+        }).eq("sale_id", sale_id).execute()
+        return True
+    except Exception as e:
+        print(f"Error updating delivery status: {e}")
+        return False
+
+def overview_deliveries(delivery_person_id):
+    conn = get_supabase()
+    deliveries = conn.table("deliveries").select("*").eq("delivery_person_id", delivery_person_id).order("updated_at", desc=True).execute().data
+    return deliveries
+
+def get_delivery_details(sale_id):
+    conn = get_supabase()
+    delivery = conn.table("deliveries").select("*").eq("sale_id", sale_id).execute().data
+    if delivery:
+        return delivery[0]
+    return None

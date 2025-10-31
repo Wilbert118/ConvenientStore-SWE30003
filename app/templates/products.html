@@ -19,4 +19,19 @@
         {% endfor %}
     </div>
 {% endblock %}
+{% block scripts %}
+<script>
+    function addToCart(id, name, price, image) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const existingItem = cart.find(item => item.id === id);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ id: id, name: name, price: price, image: image, quantity: 1 });
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert(name + ' has been added to your cart.');
+        }
+</script>
+{% endblock %}
 

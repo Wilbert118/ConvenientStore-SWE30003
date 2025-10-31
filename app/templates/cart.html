@@ -17,7 +17,6 @@
         <div class="cart-summary" id="cart-summary"></div>
         <button class="btn btn-primary" onclick="checkout()">Checkout</button>
         `;
-        renderCart();
     } else {
         container.innerHTML = `
         <p>Your cart is empty. Browse our <a href="/products">Product Catalogue</a> to add items.</p>
@@ -30,4 +29,54 @@
     <h1>Shopping Cart</h1>
     <p>Please <a href="/login">log in</a> to view your cart.</p>
 {% endif %}
+{% endblock %}
+{% block scripts %}
+<script>
+        function renderCart() {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const container = document.getElementById("cart-items");
+            const summary = document.getElementById("cart-summary");
+            if (!container || !summary) {
+                console.warn("Cart container or summary element not found.");
+                return;
+            }
+            container.innerHTML = "";
+            let total = 0;
+
+            if (cart.length === 0) {
+                container.innerHTML = "<p>Your cart is empty.</p>";
+                summary.innerHTML = "";
+                return;
+            }
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+                const row = document.createElement("div");
+                row.className = "cart-item";
+                row.innerHTML = `
+                <img src="${item.image}" alt="${item.name}" width="100">
+                <div>
+                    <strong>${item.name}</strong><br>
+                    Price: $${item.price.toFixed(2)} x ${item.quantity}<br>
+                </div>
+                <button class="btn btn-danger btn-sm" onclick="removeFromCart('${item.id}')">Remove</button>
+                `;
+                container.appendChild(row);
+            });
+            summary.innerHTML = `<h3>Total: $${total.toFixed(2)}</h3>`;
+
+        }
+
+        function removeFromCart(productId) {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const updatedCart = cart.filter(item => item.id !== productId);
+            localStorage.setItem("cart", JSON.stringify(updatedCart));
+            renderCart();
+        }
+
+        function checkout() {
+            window.location.href = "/checkout";
+
+        }
+        document.addEventListener("DOMContentLoaded", renderCart);
+</script>
 {% endblock %}

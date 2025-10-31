@@ -27,3 +27,30 @@ def insert_product(name, price, category, stock, image_url):
         "stock": stock,
         "image_url": image_url
     }).execute()
+
+def deduct_stock(sale_id):
+    conn = get_supabase()
+    try:
+        items = conn.table('cart_items').select('product_id, quantity').eq('sale_id', sale_id).execute()
+        
+        for item in items.data:
+            product_id = item['product_id']
+            quantity_sold = item['quantity']
+            product = conn.table('products').select('stock').eq('id', product_id).execute().data
+            if not product:
+                print(f"Product ID {product_id} not found.")
+                return False
+            current_stock = product[0]['stock']
+            if quantity_sold > current_stock:
+                print(f"Insufficient stock for product ID: {product_id}")
+                return False
+            
+            new_stock = current_stock - quantity_sold
+            conn.table('products').update({
+                'stock': new_stock
+            }).eq('id', product_id).execute()
+        return True
+    except Exception as e:
+        print(f"Error deducting stock: {e}")
+        return False    
+                

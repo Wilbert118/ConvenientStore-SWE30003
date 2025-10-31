@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, session, flash
 from app.models.payment import process_payment
 from app.models.delivery import assign_delivery
+from app.models.product import deduct_stock
 
 payment_bp = Blueprint('payment', __name__)
 
@@ -15,6 +16,7 @@ def payment():
         method = request.form['method']    
         payment = process_payment(user_id, sale_id, method)
         if payment:
+            deduct_stock(sale_id)
             assign_delivery(sale_id)
             flash("Payment successful! Your order is being processed.")
             return redirect(f"/order/{sale_id}/status")
