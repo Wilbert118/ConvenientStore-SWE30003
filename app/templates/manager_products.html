@@ -1,0 +1,20 @@
+<table class="table">
+  <thead>
+    <tr><th>Name</th><th>Price</th><th>Stock</th><th>Actions</th></tr>
+  </thead>
+  <tbody>
+    {% for product in products %}
+    <tr>
+      <td>{{ product.name }}</td>
+      <td>${{ product.price }}</td>
+      <td>{{ product.stock }}</td>
+      <td>
+        <a href="/manager/product/edit/{{ product.id }}" class="btn btn-sm btn-warning">Edit</a>
+        <form method="POST" action="/manager/product/delete/{{ product.id }}" style="display:inline;">
+          <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this product?')">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

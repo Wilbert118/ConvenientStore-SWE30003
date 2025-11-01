@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Manager Dashboard{% endblock %}
+
+{% block content %}
+<h1>🧭 Manager Dashboard</h1>
+
+
+<div class="summary-cards">
+  <div>Total Products: {{ total_products }}</div>
+  <div>Total Orders: {{ total_orders }}</div>
+  <div>Total Users: {{ total_users }}</div>
+  <div>Total Deliveries: {{ total_deliveries }}</div>
+</div>
+
+
+<ul class="nav nav-tabs" id="managerTabs">
+  <li class="nav-item">
+    <a class="nav-link active" data-tab="products" href="#">Products</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-tab="sales" href="#">Sales</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-tab="deliveries" href="#">Deliveries</a>
+  </li>
+</ul>
+
+<div class="tab-content mt-3">
+  <div class="tab-pane" id="products">
+    {% include "manager_products.html" %}
+  </div>
+  <div class="tab-pane" id="sales" style="display:none;">
+    {% include "manager_sales.html" %}
+  </div>
+  <div class="tab-pane" id="deliveries" style="display:none;">
+    {% include "manager_deliveries.html" %}
+  </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const tabs = document.querySelectorAll("#managerTabs .nav-link");
+    const panes = document.querySelectorAll(".tab-pane");
+
+    tabs.forEach(tab => {
+      tab.addEventListener("click", function (e) {
+        e.preventDefault();
+
+        
+        tabs.forEach(t => t.classList.remove("active"));
+
+        
+        panes.forEach(pane => pane.style.display = "none");
+
+        
+        this.classList.add("active");
+
+        
+        const targetId = this.getAttribute("data-tab");
+        const targetPane = document.getElementById(targetId);
+        if (targetPane) {
+          targetPane.style.display = "block";
+        }
+      });
+    });
+  });
+</script>
+{% endblock %}
+

@@ -1,0 +1,35 @@
+<h3>🚚 Delivery Overview</h3>
+
+<p>Total Deliveries: {{ total_deliveries }}</p>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Delivery ID</th>
+      <th>Sale ID</th>
+      <th>Assigned To</th>
+      <th>Status</th>
+      <th>Update</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for delivery in deliveries %}
+    <tr>
+      <td>{{ delivery.id }}</td>
+      <td>{{ delivery.sale_id }}</td>
+      <td>{{ delivery.delivery_person }}</td>
+      <td>{{ delivery.status }}</td>
+      <td>
+        <form method="POST" action="/manager/delivery/update/{{ delivery.id }}">
+          <select name="status">
+            <option value="pending" {% if delivery.status == 'pending' %}selected{% endif %}>Pending</option>
+            <option value="shipped" {% if delivery.status == 'shipped' %}selected{% endif %}>Shipped</option>
+            <option value="delivered" {% if delivery.status == 'delivered' %}selected{% endif %}>Delivered</option>
+          </select>
+          <button type="submit" class="btn btn-sm btn-primary">Update</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

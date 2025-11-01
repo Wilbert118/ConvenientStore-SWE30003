@@ -9,6 +9,7 @@ from app.routes.delivery import delivery_bp
 from app.routes.checkout import checkout_bp
 from app.routes.payment import payment_bp
 from app.routes.delivery import order_status_bp
+from app.routes.admin import manager_bp
 
 def create_app():
     app = Flask(__name__)
@@ -25,6 +26,7 @@ def create_app():
     app.register_blueprint(checkout_bp)
     app.register_blueprint(payment_bp)
     app.register_blueprint(order_status_bp)
+    app.register_blueprint(manager_bp)
     
 
     return app

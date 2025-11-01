@@ -57,6 +57,9 @@
                 <div class="nav-right">
                     {% if session.get("user").get("role") == "delivery" %}
                         <a href="/delivery/dashboard">Delivery Dashboard</a>
+
+                    {% elif session.get("user").get("role") == "manager" %}
+                        <a href="/manager/dashboard">Manager Dashboard</a>
                     {% else %}
                         <a href="/orders">My Orders</a>
                         <a href="/cart">🛒 Cart</a>

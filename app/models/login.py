@@ -13,12 +13,12 @@ def authenticate(email, password):
         response = conn.table("users").select("*").eq("email", email).execute()
         users = response.data
         if not users:
-            return None
+            return False
         
         stored_hashed= users[0]['password_hash']
         if stored_hashed == hashed_pw:
             return users[0]
-        return None
+        return False
     except Exception as e:
         print(f"Error during authentication: {e}")
         return None
