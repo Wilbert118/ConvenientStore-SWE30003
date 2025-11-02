@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Invoice Details{% endblock %}
+
+{% block content %}
+<h1>Invoice Details</h1>
+
+{% if invoice %}
+  <table class="table">
+    <tr><th>Invoice ID</th><td>{{ invoice.id }}</td></tr>
+    <tr><th>Sale ID</th><td>{{ invoice.sale_id }}</td></tr>
+    <tr><th>Invoice URL</th><td>{{ invoice.invoice_url }}</td></tr>
+    <tr><th>Generated At</th><td>{{ invoice.generated_at }}</td></tr>
+  </table>
+
+  <p>
+    <a href="{{ url_for('invoices.download_invoice', sale_id=invoice.sale_id) }}" 
+       class="btn btn-success">
+       ⬇️ Download PDF
+    </a>
+  </p>
+{% else %}
+  <p>No invoice found for this order.</p>
+{% endif %}
+
+<a href="/products">← Back to Products</a>
+{% endblock %}
