@@ -1,0 +1,15 @@
+# --- Web Framework ---
+Flask==3.0.3
+Flask-Cors==4.0.0
+python-dotenv==1.2.1
+
+# --- Database & ORM ---
+psycopg2-binary==2.9.11
+SQLAlchemy==2.0.34
+
+# --- Supabase Integration ---
+supabase==2.4.3
+
+# --- Utilities ---
+requests==2.32.3
+gunicorn==23.0.0   
