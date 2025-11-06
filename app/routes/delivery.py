@@ -7,7 +7,7 @@ order_status_bp = Blueprint('order_status', __name__)
 @delivery_bp.route('/order/<int:sale_id>/status')
 def order_status_view(sale_id):
     status = order_status(sale_id)
-    return render_template('order_status.html', status=status)
+    return render_template('order_status.html', status=status, sale_id=sale_id)
 
 @order_status_bp.route('/orders')
 def my_orders_view():

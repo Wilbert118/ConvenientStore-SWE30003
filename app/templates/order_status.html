@@ -26,4 +26,13 @@
 </ul>
 
 <a href="/products">← Back to Products</a>
+
+<hr>
+<h2>Invoice</h2>
+<p>
+  <a href="{{ url_for('invoices.create_invoice', sale_id=sale_id) }}" 
+     class="btn btn-primary">
+     📄 Generate & View Invoice
+  </a>
+</p>
 {% endblock %}
